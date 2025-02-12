@@ -16,7 +16,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.AWS_SSH_KEY }}
           script: |
-            cd /var/www/fastapi-app
+            cd /var/www/fastapi-app/fastapi-book-project
             git pull origin main
             python3.11 -m venv venv
             source venv/bin/activate
