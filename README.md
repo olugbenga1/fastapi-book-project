@@ -129,6 +129,18 @@ The API includes proper error handling for:
 - Invalid genre types
 - Malformed requests
 
+## Deployment Setup
+
+1. Clone repository
+2. Set up AWS EC2 instance
+3. Configure Nginx as reverse proxy
+4. Set up GitHub Actions secrets:
+   - EC2_IP
+   - SSH_PRIVATE_KEY
+5. Merge to main branch triggers deployment
+
+Access API at: http://<EC2_IP>/api/v1/books/{id}
+
 ## Contributing
 
 1. Fork the repository
