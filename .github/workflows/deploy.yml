@@ -2,29 +2,23 @@ name: deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Deploy to server
-        uses: appleboy/ssh-action@v
+      - name: Connect to EC2 & Deploy
+        uses: appleboy/ssh-action@v1.0.0
         with:
-        python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Deploy to production
-      run: |
-        # Your deployment commands here, like ssh commands to your server
-      env:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        password: ${{ secrets.SERVER_PASSWORD }}
+          host: ${{ secrets.AWS_EC2_IP }}
+          username: ubuntu
+          key: ${{ secrets.AWS_SSH_KEY }}
+          script: |
+            cd /var/www/fastapi-app
+            git pull origin main
+            python3.11 -m venv venv
+            source venv/bin/activate
+            pip install -r requirements.txt
+            sudo systemctl restart fastapi.service
+            sudo systemctl reload nginx
